@@ -1,26 +1,33 @@
 LDmicro0.2
 MICRO=Atmel AVR ATmega328 32-Pin packages
-CYCLE=1000 us at Timer0, YPlcCycleDuty:0
+CYCLE=1000 us at Timer0, YPlcCycleDuty:0, ConfigurationWord(s):0xC89AD6D200000000
 CRYSTAL=16000000 Hz
-BAUD=9600 Hz
+BAUD=9600 Hz, RATE=0 Hz, SPEED=0 Hz
 COMPILED=D:\LDs\SWATCH2\swatch2.hex
 
+PULL-UP LIST
+    PB: 0xFFFFFFFF 
+    PC: 0xFFFFFFFF 
+    PD: 0xFFFFFFFF 
+END
+
 VAR LIST
-    1 bytes #PORTB 
-    1 bytes #PORTC 
-    1 bytes #PORTD 
-    1 bytes CState 
-    1 bytes Chh 
-    1 bytes Cmm 
-    1 bytes Cs100 
-    1 bytes Css 
-    1 bytes T1 
-    1 bytes T100_Hz 
-    1 bytes T2 
-    1 bytes char7seg 	Now not used !!!
-    1 bytes dest 
-    1 bytes scanB 
-    1 bytes scanC 
+    1 bytes #PORTB 	Now not used !!!
+    1 bytes #PORTC 	Now not used !!!
+    1 bytes #PORTD 	Now not used !!!
+    1 bytes CState
+    1 bytes Chh 	Now not used !!!
+    1 bytes Cmm 	Now not used !!!
+    1 bytes Cs100 	Now not used !!!
+    1 bytes Css 	Now not used !!!
+    1 bytes T1 	Now not used !!!
+    1 bytes T100_Hz 	Now not used !!!
+    1 bytes T2 	Now not used !!!
+  129 bytes char7seg
+    1 bytes char7seg[0]
+    1 bytes dest
+    1 bytes scanB
+    1 bytes scanC
 END
 
 IO LIST
@@ -56,48 +63,48 @@ END
 RUNG 3
   OSR
   PARALLEL
-    COIL Yd0 0 1 0
-    COIL Yd1 0 1 0
-    COIL Yd2 0 1 0
-    COIL Yd3 0 1 0
-    COIL Yd4 0 1 0
-    COIL Yd5 0 1 0
-    COIL Yd6 0 1 0
-    COIL Yd7 0 1 0
+    COIL Yd0 0 1 0 0
+    COIL Yd1 0 1 0 0
+    COIL Yd2 0 1 0 0
+    COIL Yd3 0 1 0 0
+    COIL Yd4 0 1 0 0
+    COIL Yd5 0 1 0 0
+    COIL Yd6 0 1 0 0
+    COIL Yd7 0 1 0 0
   END
 END
 RUNG 4
   OSR
   PARALLEL
-    COIL Yc0 0 1 0
-    COIL Yc1 0 1 0
-    COIL Yc2 0 1 0
-    COIL Yc3 0 1 0
-    COIL Yc4 0 1 0
-    COIL Yc5 0 1 0
+    COIL Yc0 0 1 0 0
+    COIL Yc1 0 1 0 0
+    COIL Yc2 0 1 0 0
+    COIL Yc3 0 1 0 0
+    COIL Yc4 0 1 0 0
+    COIL Yc5 0 1 0 0
   END
 END
 RUNG 5
   OSR
   PARALLEL
-    COIL Yb0 0 1 0
-    COIL Yb1 0 1 0
+    COIL Yb0 0 1 0 0
+    COIL Yb1 0 1 0 0
   END
 END
 RUNG 6
   COMMENT Checking the input switches on a board.\r\nT1 and T2 prevent contact bounce of switches. If not, then increase T1, T2 (100ms max value).
 END
 RUNG 7
-  CONTACTS X_StartStopContinue 1
-  TOF T1 25000
+  CONTACTS X_StartStopContinue 1 0
+  TOF T1 25000 0
   OSF
-  COIL RStartStopContinue 0 1 0
+  COIL RStartStopContinue 0 1 0 0
 END
 RUNG 8
-  CONTACTS X_StopZero 1
-  TOF T2 25000
+  CONTACTS X_StopZero 1 0
+  TOF T2 25000 0
   OSF
-  COIL RStopZero 0 1 0
+  COIL RStopZero 0 1 0 0
 END
 RUNG 9
   COMMENT Processing the logical state of stopwatch.\r\nTo start stopwatch press XStartStopContinue button on the board.
@@ -109,14 +116,14 @@ RUNG 11
   COMMENT If stopwatch is stopped and StopZero button is pressed, \r\nthen stopwatch resetting to 0.
 END
 RUNG 12
-  CONTACTS RStartStopContinue 0
+  CONTACTS RStartStopContinue 0 0
   PARALLEL
-    CTC CState 1 0
-    COIL RStartStopContinue 0 0 1
+    CTC CState 1 0 /
+    COIL RStartStopContinue 0 0 1 0
   END
 END
 RUNG 13
-  CONTACTS RStopZero 0
+  CONTACTS RStopZero 0 0
   PARALLEL
     SERIES
       OSR
@@ -129,7 +136,7 @@ RUNG 13
       END
     END
     MOVE CState 0
-    COIL RStopZero 0 0 1
+    COIL RStopZero 0 0 1 0
   END
 END
 RUNG 14
@@ -140,20 +147,20 @@ RUNG 15
     SHORT
     EQU CState 1
   END
-  RTO T100_Hz 10000
+  RTO T100_Hz 10000 0
   PARALLEL
     SERIES
-      CTC Cs100 99 0
-      CTC Css 59 0
-      CTC Cmm 59 0
-      CTC Chh 23 0
+      CTC Cs100 99 0 /
+      CTC Css 59 0 /
+      CTC Cmm 59 0 /
+      CTC Chh 23 0 /
     END
     RES T100_Hz
     SERIES
       OSR
       PARALLEL
-        COIL Y100_Hz 0 1 0
-        COIL Y100_Hz 0 0 1
+        COIL Y100_Hz 0 1 0 0
+        COIL Y100_Hz 0 0 1 0
       END
     END
   END
@@ -235,8 +242,8 @@ RUNG 32
 END
 RUNG 33
   LES Cs100 50
-  COIL Yp5 0 0 0
+  COIL Yp5 0 0 0 0
 END
 RUNG 34
-  COMMENT by Ihor Nehrutsa, LDmicro.GitHub@gmail.com, August 2016
+  PLACEHOLDER
 END

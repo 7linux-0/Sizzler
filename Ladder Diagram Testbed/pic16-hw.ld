@@ -13,6 +13,14 @@ END
 PROGRAM
 RUNG
     COMMENT The more hardware-oriented ops (PWM, ADC, UART, EEPROM), test for the\r\nPIC16s.
+SERIES
+END
+SERIES
+END
+SERIES
+END
+SERIES
+END
 END
 RUNG
     PERSIST saved
@@ -28,6 +36,7 @@ RUNG
     OSR
     ADD saved saved 1
 END
+
 RUNG
     PARALLEL
         SERIES

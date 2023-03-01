@@ -25,7 +25,6 @@ RUNG 2
       LEQ Ain 500
       COIL Yled1 0 0 0 0
     END
-    SERIES
       GEQ Ain 501
       COIL Yled2 0 0 0 0
     END

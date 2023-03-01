@@ -21,6 +21,8 @@ END
 RUNG 2
   GRT cycle 255
   MOVE cycle 0
+  MOVE cycle 0
+  MOVE cycle 0
 END
 RUNG 3
   SHORT

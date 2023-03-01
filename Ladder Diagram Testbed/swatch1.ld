@@ -14,10 +14,10 @@ END
 
 PROGRAM
 RUNG
-  COMMENT Sample program: Stopwatch over UART.\r\nCState: 0-stopwatch is stopped, 1-stopwatch is running.
+
 END
 RUNG
-  COMMENT \r\nInitialization is performed once ('Formatted str over UART' has OSR on input inside itself).
+
 END
 RUNG
   FORMATTED_STRING (none) 45 92 102 92 114 92 110 83 116 111 112 119 97 116 99 104 32 111 118 101 114 32 85 65 82 84 46 92 114 92 110 104 104 58 109 109 58 115 115 46 115 49 48 48 92 110
@@ -40,7 +40,7 @@ RUNG
   COIL RStopZero 0 1 0
 END
 RUNG
-  COMMENT Checking the UART input.\r\n'1' is equivalent to XStartStopContinue. '0' is equivalent to StopZero.
+
 END
 RUNG
   UART_RECV char
@@ -56,13 +56,13 @@ RUNG
   END
 END
 RUNG
-  COMMENT Processing the logical state of stopwatch.\r\nTo start stopwatch press XStartStopContinue on the board or send '1' to bord via UART.
+
 END
 RUNG
-  COMMENT To stop stopwatch press StopZero or send '0' via UART.\r\nTo continue press XStartStopContinue or send '1' via UART.
+
 END
 RUNG
-  COMMENT If stopwatch is stopped and StopZero is pressed or '0' detected thrue UART, \r\nthen stopwatch resetting to 0.
+
 END
 RUNG
   CONTACTS RStartStopContinue 0
@@ -93,7 +93,7 @@ RUNG
   MOVE CState 1
 END
 RUNG
-  COMMENT hh:mm:ss.s100\r\nhours:minutes:seconds.hundredths of second
+
 END
 RUNG
   EQU CState 1
@@ -109,7 +109,7 @@ RUNG
   END
 END
 RUNG
-  COMMENT Sending the stopwatch via UART, step by step, one char per PLC cycle.\r\nDon't need a high update rate, the human eye perceives 24 FPS. Precise stopwatch data will be displayed in the next cycle of TdisplayRefresh after stopping the stopwatch.
+ 
 END
 RUNG
   CONTACTS RInited 0
@@ -135,7 +135,9 @@ END
 RUNG
   LES Cs100 50
   COIL Y1s 0 0 0
+  COIL Y1s 0 0 0
+  COIL Y2s  0 0
 END
 RUNG
-  COMMENT by Ihor Nehrutsa, LDmicro.GitHub@gmail.com, February 2016
+
 END
