@@ -1,0 +1,110 @@
+LDmicro0.1
+CYCLE=10000 us at Timer1, YPlcCycleDuty:0, ConfigurationWord(s):0xEC6245DA00000000
+CRYSTAL=16000000 Hz
+BAUD=9600 Hz, RATE=0 Hz, SPEED=0 Hz
+
+IO LIST
+    Xled at 32 0 0
+    YTEMP_HI at 14 0 0
+    YUpdate at 17 0 0
+    Ycycle2 at 27 0 0
+    ADCvalue at 26 0 0
+END
+
+PROGRAM
+RUNG
+  PLACEHOLDER
+END
+RUNG
+  PLACEHOLDER
+END
+RUNG
+  PERSIST saved
+END
+RUNG
+  OSR
+  PARALLEL
+    EQU saved 0
+    EQU saved 0xffff
+  END
+  MOVE saved '1'
+END
+RUNG
+  UART_RECV saved 1 0
+END
+RUNG
+  PLACEHOLDER
+END
+RUNG
+  PARALLEL
+    CONTACTS Ycycle2 1 0
+    CONTACTS Xled 0 0
+  END
+  COIL Ycycle2 0 0 0 0
+END
+RUNG
+  PLACEHOLDER
+END
+RUNG
+  READ_ADC ADCvalue 0
+END
+RUNG
+END
+RUNG
+  DIV PWMduty ADCvalue 16
+END
+RUNG
+  SET_PWM PWMduty 1000 P 
+END
+RUNG
+  PLACEHOLDER
+END
+RUNG
+  CONTACTS RUpdate 1 0
+  TON TUpdateON 500000 -1
+  TOF TUpdateOF 500000 -1
+  PARALLEL
+    COIL RUpdate 0 0 0 0
+    COIL YUpdate 0 0 0 0
+  END
+END
+RUNG
+  CONTACTS RUpdate1 0 0
+  OSR
+  PARALLEL
+    SERIES
+      GEQ ADCvalue 700
+      COIL YTEMP_HI 0 1 0 0
+    END
+    SERIES
+      LEQ ADCvalue 650
+      COIL YTEMP_HI 0 0 1 0
+    END
+    SERIES
+      EQU display 0
+      FORMATTED_STRING ADCvalue 11 65 68 67 118 97 108 117 101 61 92 52
+      PARALLEL
+        MOVE display 1
+        SERIES
+          OSF
+          MOVE display 2
+        END
+      END
+    END
+  END
+END
+RUNG
+  EQU display 2
+  FORMATTED_STRING PWMduty 11 32 80 87 77 100 117 116 121 61 92 52
+  OSF
+  MOVE display 3
+END
+RUNG
+  EQU display 3
+  FORMATTED_STRING saved 13 32 115 97 118 101 100 61 92 52 92 114 92 110
+  OSF
+  MOVE display 0
+END
+RUNG
+  PLACEHOLDER
+END
